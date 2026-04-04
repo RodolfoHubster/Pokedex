@@ -1,9 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PokemonController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', [PokemonController::class, 'home']);
+// GET / -> Home
+Route::get('/', function () {
+    return view('home');
+});
+
+// GET /pokemon -> Listado
 Route::get('/pokemon', [PokemonController::class, 'index']);
+
+// GET /pokemon/{name} -> Detalle
 Route::get('/pokemon/{name}', [PokemonController::class, 'show']);
-Route::get('/about', [PokemonController::class, 'about']);
