@@ -6012,8 +6012,6 @@
     ],
     "packages-dev": [
         {
-<<<<<<< HEAD
-=======
             "name": "barryvdh/laravel-debugbar",
             "version": "v4.2.3",
             "source": {
@@ -6113,7 +6111,6 @@
             "time": "2026-04-03T12:11:29+00:00"
         },
         {
->>>>>>> main
             "name": "fakerphp/faker",
             "version": "v1.24.1",
             "source": {
@@ -6867,8 +6864,6 @@
             "time": "2022-02-21T01:04:05+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "php-debugbar/php-debugbar",
             "version": "v3.6.4",
             "source": {
@@ -7037,7 +7032,6 @@
             "time": "2026-01-15T14:47:34+00:00"
         },
         {
->>>>>>> main
             "name": "phpunit/php-code-coverage",
             "version": "11.0.12",
             "source": {
