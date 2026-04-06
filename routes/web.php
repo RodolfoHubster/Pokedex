@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PokemonController;
+use Illuminate\Support\Facades\Route;
 
 // GET / -> Home
 Route::get('/', function () {
