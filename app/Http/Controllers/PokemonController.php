@@ -45,7 +45,11 @@ class PokemonController extends Controller
         }
     }
 
-    return view('pokemon.index', compact('pokemons', 'query', 'error'));
+    $favoriteNames = auth()->check()
+        ? auth()->user()->favorites()->pluck('pokemon_name')->toArray()
+        : [];
+
+    return view('pokemon.index', compact('pokemons', 'query', 'error', 'favoriteNames'));
 }
 
     public function show($name)
@@ -66,7 +70,10 @@ class PokemonController extends Controller
         'defense' => $data['stats'][2]['base_stat'],
     ];
 
-    return view('pokemon.show', compact('pokemon'));
+    $isFavorite = auth()->check() &&
+        auth()->user()->favorites()->where('pokemon_name', $data['name'])->exists();
+
+    return view('pokemon.show', compact('pokemon', 'isFavorite'));
 }
 
     public function about()
