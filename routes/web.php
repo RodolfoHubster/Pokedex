@@ -28,4 +28,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/dashboard', function () {
+    $user = auth()->user();
+    $favorites = $user->favorites()->latest()->get();
+    $totalFavorites = $favorites->count();
+    $recentFavorites = $favorites->take(5);
+    $lastAdded = $favorites->first();
+
+    return view('dashboard', compact(
+        'totalFavorites',
+        'recentFavorites',
+        'lastAdded'
+    ));
+})->middleware(['auth'])->name('dashboard');
+
 require __DIR__.'/auth.php';
