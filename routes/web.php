@@ -5,20 +5,26 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-// GET / -> Home
+// Públicas
 Route::get('/', [PokemonController::class, 'home']);
-
-// GET /pokemon -> Listado
 Route::get('/pokemon', [PokemonController::class, 'index']);
-
-// GET /pokemon/{name} -> Detalle
 Route::get('/pokemon/{name}', [PokemonController::class, 'show']);
-
-// GET /about -> Acerca de
 Route::get('/about', [PokemonController::class, 'about']);
 
-// Favoritos (requiere login)
+// Protegidas (requieren login)
 Route::middleware('auth')->group(function () {
+
+    Route::get('/dashboard', function () {
+        $user = auth()->user();
+        $favorites = $user->favorites()->latest()->get();
+
+        return view('dashboard', [
+            'totalFavorites'  => $favorites->count(),
+            'recentFavorites' => $favorites->take(5),
+            'lastAdded'       => $favorites->first(),
+        ]);
+    })->name('dashboard');
+
     Route::get('/mis-pokemon', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('/favorites/{name}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
@@ -28,18 +34,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/dashboard', function () {
-    $user = auth()->user();
-    $favorites = $user->favorites()->latest()->get();
-    $totalFavorites = $favorites->count();
-    $recentFavorites = $favorites->take(5);
-    $lastAdded = $favorites->first();
-
-    return view('dashboard', compact(
-        'totalFavorites',
-        'recentFavorites',
-        'lastAdded'
-    ));
-})->middleware(['auth'])->name('dashboard');
-
+// ⬇️ ESTA LÍNEA es la que carga login, register, logout, etc.
 require __DIR__.'/auth.php';
