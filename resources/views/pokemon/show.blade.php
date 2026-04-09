@@ -32,6 +32,24 @@
         </div>
     </div>
 
-    <a href="/pokemon" class="btn btn-secondary mt-4">Volver al listado</a>
+    <div class="mt-4 d-flex justify-content-center gap-2">
+        <a href="/pokemon" class="btn btn-secondary">Volver al listado</a>
+        @auth
+            @if($isFavorite)
+                <form method="POST" action="{{ route('favorites.destroy', $pokemon['name']) }}">
+                    @csrf @method('DELETE')
+                    <button class="btn btn-warning">⭐ Quitar de favoritos</button>
+                </form>
+            @else
+                <form method="POST" action="{{ route('favorites.store') }}">
+                    @csrf
+                    <input type="hidden" name="pokemon_name" value="{{ $pokemon['name'] }}">
+                    <button class="btn btn-outline-warning">☆ Guardar en favoritos</button>
+                </form>
+            @endif
+        @else
+            <a href="{{ route('login') }}" class="btn btn-outline-warning">☆ Inicia sesión para guardar</a>
+        @endauth
+    </div>
 </div>
 @endsection
