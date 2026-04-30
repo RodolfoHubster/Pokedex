@@ -4,7 +4,7 @@
 <div class="flex flex-col items-center justify-center py-24 text-center">
 
     {{-- Pokeball rota --}}
-    <div class="text-8xl mb-6 opacity-50">⚫</div>
+    <div class="text-8xl mb-6 opacity-50" aria-hidden="true">⚫</div>
 
     <h1 class="text-8xl font-black text-gray-700 mb-4">404</h1>
 

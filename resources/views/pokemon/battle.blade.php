@@ -5,7 +5,7 @@
 
     {{-- Header --}}
     <div class="text-center mb-10">
-        <p class="text-xs font-bold tracking-widest text-yellow-500 uppercase mb-2">⚔️ Comparador de Stats</p>
+        <p class="text-xs font-bold tracking-widest text-yellow-500 uppercase mb-2"><span aria-hidden="true">⚔️</span> Comparador de Stats</p>
         <h1 class="text-4xl font-black tracking-widest text-white uppercase">
             Pokémon <span class="text-yellow-500">Battle</span>
         </h1>

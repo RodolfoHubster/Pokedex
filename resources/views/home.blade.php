@@ -47,7 +47,7 @@
 </div>
 
 {{-- Generaciones decorativas --}}
-<div class="max-w-3xl mx-auto px-4 mb-10">
+<div class="max-w-3xl mx-auto px-4 mb-10" aria-hidden="true">
     <p class="text-center text-xs text-gray-600 tracking-widest uppercase mb-5">Generaciones</p>
     <div class="flex flex-wrap gap-2 justify-center">
         @foreach(['Gen I','Gen II','Gen III','Gen IV','Gen V','Gen VI','Gen VII','Gen VIII','Gen IX'] as $gen)
