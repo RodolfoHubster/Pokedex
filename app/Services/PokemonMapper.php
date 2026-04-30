@@ -20,10 +20,10 @@ class PokemonMapper
             $data['types'] ?? []
         );
 
-        $stats   = $data['stats'] ?? [];
-        $hp      = $stats[0]['base_stat'] ?? 0;
-        $attack  = $stats[1]['base_stat'] ?? 0;
-        $defense = $stats[2]['base_stat'] ?? 0;
+        $stats   = collect($data['stats'] ?? []);
+        $hp      = (int) ($stats->firstWhere('stat.name', 'hp')['base_stat']      ?? 0);
+        $attack  = (int) ($stats->firstWhere('stat.name', 'attack')['base_stat']  ?? 0);
+        $defense = (int) ($stats->firstWhere('stat.name', 'defense')['base_stat'] ?? 0);
 
         return compact('name', 'sprite', 'types', 'hp', 'attack', 'defense');
     }
