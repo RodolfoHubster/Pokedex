@@ -4,7 +4,15 @@
 <div class="px-4 py-6 mx-auto max-w-7xl">
 
     <div class="flex items-center justify-between mb-8">
-        <h2 class="text-3xl font-black tracking-widest text-yellow-500 uppercase">Pokémon</h2>
+        <div class="flex items-center gap-3">
+            <h2 class="text-3xl font-black tracking-widest text-yellow-500 uppercase">Pokémon</h2>
+            @if($type)
+                <span class="type-{{ $type }} px-3 py-1 text-xs font-bold text-white rounded-full uppercase tracking-wide">
+                    {{ $type }}
+                </span>
+                <a href="/pokemon" class="text-xs text-gray-500 hover:text-red-400 transition-colors">✕ Limpiar</a>
+            @endif
+        </div>
         <span class="text-xs text-gray-500 tracking-widest uppercase">{{ count($pokemons) }} resultados</span>
     </div>
 
@@ -15,7 +23,7 @@
                 type="text"
                 name="search"
                 class="w-full px-5 py-3 text-white placeholder-gray-500 bg-gray-800 border border-gray-700 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                placeholder="Buscar por nombre o tipo..."
+                placeholder="Buscar por nombre..."
                 value="{{ $query }}"
             >
             <button class="px-6 py-3 font-black text-gray-900 uppercase bg-yellow-500 border border-yellow-500 rounded-r-lg hover:bg-yellow-400 transition-colors" type="submit">
@@ -68,13 +76,13 @@
                     @if(in_array($pokemon['name'], $favoriteNames))
                         <form method="POST" action="{{ route('favorites.destroy', $pokemon['name']) }}">
                             @csrf @method('DELETE')
-                            <button class="px-3 py-2 text-sm bg-yellow-500/20 border border-yellow-500/50 rounded-lg hover:bg-red-500/20 hover:border-red-500/50 transition-colors" title="Quitar favorito">⭐</button>
+                            <button class="px-3 py-2 text-sm bg-yellow-500/20 border border-yellow-500/50 rounded-lg hover:bg-red-500/20 hover:border-red-500/50 transition-colors" title="Quitar favorito"><i class="fa-solid fa-star text-yellow-400"></i></button>
                         </form>
                     @else
                         <form method="POST" action="{{ route('favorites.store') }}">
                             @csrf
                             <input type="hidden" name="pokemon_name" value="{{ $pokemon['name'] }}">
-                            <button class="px-3 py-2 text-sm border border-gray-600 rounded-lg hover:border-yellow-500/50 hover:bg-yellow-500/10 transition-colors" title="Agregar favorito">☆</button>
+                            <button class="px-3 py-2 text-sm border border-gray-600 rounded-lg hover:border-yellow-500/50 hover:bg-yellow-500/10 transition-colors" title="Agregar favorito"><i class="fa-regular fa-star text-gray-400"></i></button>
                         </form>
                     @endif
                 @endauth

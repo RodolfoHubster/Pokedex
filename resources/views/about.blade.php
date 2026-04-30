@@ -13,7 +13,7 @@
     {{-- Objetivo --}}
     <div class="p-6 mb-6 bg-gray-800 border border-yellow-500/30 rounded-xl shadow-lg shadow-yellow-500/5">
         <div class="flex items-start gap-4">
-            <span class="text-3xl">🎯</span>
+            <i class="fa-solid fa-bullseye text-yellow-500 text-3xl mt-1 flex-shrink-0"></i>
             <div>
                 <h2 class="text-sm font-black tracking-widest text-yellow-500 uppercase mb-2">Objetivo</h2>
                 <p class="text-gray-300 leading-relaxed">
@@ -27,7 +27,7 @@
 
     {{-- Equipo --}}
     <div class="p-6 mb-6 bg-gray-800 border border-gray-700 rounded-xl">
-        <h2 class="text-sm font-black tracking-widest text-yellow-500 uppercase mb-5">👥 Equipo</h2>
+        <h2 class="text-sm font-black tracking-widest text-yellow-500 uppercase mb-5"><i class="fa-solid fa-users mr-2"></i> Equipo</h2>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div class="flex items-center gap-4 p-4 bg-gray-900 rounded-xl border border-gray-700">
                 <div class="w-12 h-12 flex items-center justify-center bg-yellow-500 rounded-full text-gray-900 font-black text-xl flex-shrink-0">R</div>
@@ -48,7 +48,7 @@
 
     {{-- Stack tecnológico --}}
     <div class="p-6 mb-6 bg-gray-800 border border-gray-700 rounded-xl">
-        <h2 class="text-sm font-black tracking-widest text-yellow-500 uppercase mb-5">🛠️ Stack Tecnológico</h2>
+        <h2 class="text-sm font-black tracking-widest text-yellow-500 uppercase mb-5"><i class="fa-solid fa-screwdriver-wrench mr-2"></i> Stack Tecnológico</h2>
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
 
             <div class="flex items-center gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700">
@@ -92,7 +92,14 @@
             </div>
 
             <div class="flex items-center gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700">
-                <span class="text-2xl flex-shrink-0">🔴</span>
+                <svg viewBox="0 0 100 100" class="w-7 h-7 flex-shrink-0 text-red-500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="46" fill="#EF4444" stroke="#EF4444" stroke-width="1"/>
+                    <path d="M4 50 Q4 4 50 4 Q96 4 96 50" fill="#EF4444"/>
+                    <path d="M4 50 Q4 96 50 96 Q96 96 96 50" fill="#f9fafb"/>
+                    <rect x="4" y="44" width="92" height="12" fill="#1f2937"/>
+                    <circle cx="50" cy="50" r="14" fill="#1f2937"/>
+                    <circle cx="50" cy="50" r="8" fill="#f9fafb"/>
+                </svg>
                 <div>
                     <p class="text-xs font-black text-white uppercase">PokéAPI</p>
                     <p class="text-xs text-gray-500">API externa REST</p>
@@ -104,18 +111,18 @@
 
     {{-- Funcionalidades --}}
     <div class="p-6 mb-6 bg-gray-800 border border-gray-700 rounded-xl">
-        <h2 class="text-sm font-black tracking-widest text-yellow-500 uppercase mb-5">⚡ Funcionalidades</h2>
+        <h2 class="text-sm font-black tracking-widest text-yellow-500 uppercase mb-5"><i class="fa-solid fa-bolt mr-2"></i> Funcionalidades</h2>
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
             @foreach([
-                ['🔍', 'Explorar Pokémon', 'Listado de +1000 Pokémon con búsqueda por nombre'],
-                ['📋', 'Detalle completo', 'Stats, tipos, altura, peso y habilidades de cada Pokémon'],
-                ['🔐', 'Autenticación', 'Registro, login y logout con sesiones seguras'],
-                ['⭐', 'Sistema de favoritos', 'Guarda tus Pokémon favoritos vinculados a tu cuenta'],
-                ['📦', 'Almacenamiento offline', 'Sprites guardados en Base64 en la DB local'],
-                ['📊', 'Dashboard personal', 'Estadísticas y accesos rápidos para el usuario'],
+                ['magnifying-glass', 'Explorar Pokémon', 'Listado de +1000 Pokémon con búsqueda por nombre'],
+                ['list', 'Detalle completo', 'Stats, tipos, altura, peso y habilidades de cada Pokémon'],
+                ['lock', 'Autenticación', 'Registro, login y logout con sesiones seguras'],
+                ['star', 'Sistema de favoritos', 'Guarda tus Pokémon favoritos vinculados a tu cuenta'],
+                ['bolt', 'Battle', 'Combate por turnos con movimientos, captura y huida'],
+                ['chart-bar', 'Dashboard personal', 'Estadísticas y accesos rápidos para el usuario'],
             ] as [$icon, $title, $desc])
             <div class="flex items-start gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700">
-                <span class="text-xl mt-0.5">{{ $icon }}</span>
+                <i class="fa-solid fa-{{ $icon }} text-yellow-500 text-lg mt-0.5 w-5 text-center flex-shrink-0"></i>
                 <div>
                     <p class="text-xs font-black text-white uppercase">{{ $title }}</p>
                     <p class="text-xs text-gray-400 mt-0.5">{{ $desc }}</p>
@@ -127,22 +134,22 @@
 
     {{-- Arquitectura MVC --}}
     <div class="p-6 mb-6 bg-gray-800 border border-gray-700 rounded-xl">
-        <h2 class="text-sm font-black tracking-widest text-yellow-500 uppercase mb-5">🏗️ Arquitectura MVC</h2>
+        <h2 class="text-sm font-black tracking-widest text-yellow-500 uppercase mb-5"><i class="fa-solid fa-sitemap mr-2"></i> Arquitectura MVC</h2>
         <div class="grid grid-cols-3 gap-3 text-center">
             <div class="p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
-                <p class="text-2xl mb-2">🗄️</p>
+                <i class="fa-solid fa-database text-red-400 text-2xl mb-2 block"></i>
                 <p class="text-xs font-black text-red-400 uppercase tracking-widest">Modelo</p>
                 <p class="text-xs text-gray-400 mt-2">User · Favorite</p>
                 <p class="text-xs text-gray-500 mt-1">Eloquent ORM + SQLite</p>
             </div>
             <div class="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
-                <p class="text-2xl mb-2">⚙️</p>
+                <i class="fa-solid fa-gear text-yellow-400 text-2xl mb-2 block"></i>
                 <p class="text-xs font-black text-yellow-400 uppercase tracking-widest">Controlador</p>
                 <p class="text-xs text-gray-400 mt-2">PokemonController</p>
                 <p class="text-xs text-gray-500 mt-1">FavoriteController</p>
             </div>
             <div class="p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
-                <p class="text-2xl mb-2">🖥️</p>
+                <i class="fa-solid fa-desktop text-green-400 text-2xl mb-2 block"></i>
                 <p class="text-xs font-black text-green-400 uppercase tracking-widest">Vista</p>
                 <p class="text-xs text-gray-400 mt-2">Blade Templates</p>
                 <p class="text-xs text-gray-500 mt-1">Tailwind CSS</p>

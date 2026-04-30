@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Pokédex</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         .pokeball-bg {
             background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
@@ -57,9 +58,9 @@
                         <a href="/" class="px-3 py-2 text-sm font-medium tracking-wide text-gray-300 uppercase transition rounded-md hover:text-yellow-500 hover:bg-gray-800">Inicio</a>
                         <a href="/pokemon" class="px-3 py-2 text-sm font-medium tracking-wide text-gray-300 uppercase transition rounded-md hover:text-yellow-500 hover:bg-gray-800">Pokémon</a>
                         <a href="/about" class="px-3 py-2 text-sm font-medium tracking-wide text-gray-300 uppercase transition rounded-md hover:text-yellow-500 hover:bg-gray-800">Acerca de</a>
-                        <a href="{{ route('battle') }}" class="px-3 py-2 text-sm font-medium tracking-wide text-gray-300 uppercase transition rounded-md hover:text-yellow-500 hover:bg-gray-800">⚔️ Battle</a>
+                        <a href="{{ route('battle') }}" class="px-3 py-2 text-sm font-medium tracking-wide text-gray-300 uppercase transition rounded-md hover:text-yellow-500 hover:bg-gray-800"><i class="fa-solid fa-bolt mr-1"></i> Battle</a>
                         @auth
-                            <a href="{{ route('favorites.index') }}" class="px-3 py-2 text-sm font-bold tracking-wide text-gray-900 uppercase transition bg-yellow-500 rounded-md hover:bg-yellow-400">⭐ Mis Pokémon</a>
+                            <a href="{{ route('favorites.index') }}" class="px-3 py-2 text-sm font-bold tracking-wide text-gray-900 uppercase transition bg-yellow-500 rounded-md hover:bg-yellow-400"><i class="fa-solid fa-star mr-1"></i> Mis Pokémon</a>
                         @endauth
                     </div>
                 </div>
@@ -92,7 +93,7 @@
     </main>
 
     <footer class="mt-16 border-t border-gray-800 py-6 text-center text-xs text-gray-600 tracking-widest uppercase">
-        Pokédex · Laravel 12 · PokeAPI · Hecho con ❤️
+        Pokédex · Laravel 12 · PokeAPI
     </footer>
 
 </body>

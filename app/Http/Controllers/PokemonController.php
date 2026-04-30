@@ -21,11 +21,18 @@ class PokemonController extends Controller
     public function index(Request $request)
     {
         $query = $request->input('search', '');
+        $type  = $request->input('type', '');
         $error = null;
         $pokemons = [];
 
         if ($request->has('search') && trim($query) === '') {
             $error = 'El campo de búsqueda no puede estar vacío.';
+        } elseif ($type) {
+            $pokemons = $this->api->getPokemonByType($type);
+
+            if (empty($pokemons)) {
+                $error = 'No se encontraron Pokémon de ese tipo.';
+            }
         } elseif ($query) {
             $data = $this->api->getPokemon($query);
 
@@ -38,20 +45,10 @@ class PokemonController extends Controller
                 $error = 'No se encontró ningún Pokémon con ese nombre.';
             }
         } else {
-            $results = $this->api->getPokemonList();
+            $pokemons = $this->api->getPokemonList();
 
-            if (empty($results)) {
+            if (empty($pokemons)) {
                 $error = 'Sin conexión a internet. Verifica tu red para buscar nuevos Pokémon.';
-            }
-
-            foreach ($results as $item) {
-                $detail = $this->api->getPokemon($item['name']);
-                if ($detail) {
-                    $pokemons[] = [
-                        'name'   => $item['name'],
-                        'sprite' => $detail['sprites']['front_default'] ?? null,
-                    ];
-                }
             }
         }
 
@@ -59,7 +56,7 @@ class PokemonController extends Controller
             ? auth()->user()->favorites()->pluck('pokemon_name')->toArray()
             : [];
 
-        return view('pokemon.index', compact('pokemons', 'query', 'error', 'favoriteNames'));
+        return view('pokemon.index', compact('pokemons', 'query', 'type', 'error', 'favoriteNames'));
     }
 
     public function show($name)

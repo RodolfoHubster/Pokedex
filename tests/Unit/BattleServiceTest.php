@@ -32,4 +32,13 @@ class BattleServiceTest extends TestCase
         $this->assertSame('B', $this->battle->winner(100, 200));
         $this->assertSame('EMPATE', $this->battle->winner(150, 150));
     }
+
+    /** score() devuelve 0 cuando todos los stats son 0. */
+    public function test_score_returns_zero_when_all_stats_are_zero(): void
+    {
+        // Autor: Andrehi Sandoval
+        $pokemon = ['hp' => 0, 'attack' => 0, 'defense' => 0];
+
+        $this->assertSame(0, $this->battle->score($pokemon));
+    }
 }

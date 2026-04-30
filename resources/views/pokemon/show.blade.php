@@ -36,13 +36,13 @@
             @if($isFavorite)
                 <form method="POST" action="{{ route('favorites.destroy', $pokemon['name']) }}">
                     @csrf @method('DELETE')
-                    <button class="px-6 py-3 font-bold tracking-wide text-gray-900 uppercase transition bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-400">⭐ Quitar Favorito</button>
+                    <button class="px-6 py-3 font-bold tracking-wide text-gray-900 uppercase transition bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-400"><i class="fa-solid fa-star mr-2"></i> Quitar Favorito</button>
                 </form>
             @else
                 <form method="POST" action="{{ route('favorites.store') }}">
                     @csrf
                     <input type="hidden" name="pokemon_name" value="{{ $pokemon['name'] }}">
-                    <button class="px-6 py-3 font-bold tracking-wide text-yellow-500 uppercase transition border-2 border-yellow-500 rounded-lg hover:bg-gray-800">☆ Guardar Favorito</button>
+                    <button class="px-6 py-3 font-bold tracking-wide text-yellow-500 uppercase transition border-2 border-yellow-500 rounded-lg hover:bg-gray-800"><i class="fa-regular fa-star mr-2"></i> Guardar Favorito</button>
                 </form>
             @endif
         @else

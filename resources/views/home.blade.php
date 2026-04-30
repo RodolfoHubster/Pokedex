@@ -30,11 +30,11 @@
         <div class="flex flex-col sm:flex-row gap-4 justify-center mt-10">
             <a href="/pokemon"
                class="px-8 py-4 text-sm font-black tracking-widest text-gray-900 uppercase bg-yellow-500 rounded-xl hover:bg-yellow-400 transition-all duration-200 shadow-lg shadow-yellow-500/30 hover:-translate-y-1">
-                🔍 Explorar Pokémon
+                <i class="fa-solid fa-magnifying-glass mr-2"></i> Explorar Pokémon
             </a>
             <a href="{{ route('battle') }}"
                class="px-8 py-4 text-sm font-black tracking-widest text-white uppercase bg-red-600 rounded-xl hover:bg-red-500 transition-all duration-200 shadow-lg shadow-red-600/30 hover:-translate-y-1">
-                ⚔️ Battle
+                <i class="fa-solid fa-bolt mr-2"></i> Battle
             </a>
             @guest
             <a href="{{ route('register') }}"
@@ -61,7 +61,7 @@
     <p class="text-center text-xs text-gray-500 tracking-widest uppercase mb-5">Buscar por tipo</p>
     <div class="flex flex-wrap gap-2 justify-center">
         @foreach(['fire','water','grass','electric','ice','fighting','poison','psychic','bug','dragon','ghost','dark','steel','fairy','normal','ground','flying','rock'] as $type)
-        <a href="/pokemon?search={{ $type }}"
+        <a href="/pokemon?type={{ $type }}"
            class="type-{{ $type }} px-3 py-1 text-xs font-bold text-white rounded-full uppercase tracking-wide hover:opacity-80 transition-opacity shadow-sm">
             {{ $type }}
         </a>
