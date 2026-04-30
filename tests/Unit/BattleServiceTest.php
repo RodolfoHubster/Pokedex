@@ -5,40 +5,51 @@ namespace Tests\Unit;
 use App\Services\BattleService;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * 2 Unit extra — BattleService (Misión Battle)
+ * Autores: Rodolfo Huitron / Andrehi Sandoval
+ */
 class BattleServiceTest extends TestCase
 {
-    private BattleService $battle;
+    private BattleService $service;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->battle = new BattleService();
+        $this->service = new BattleService();
     }
 
-    /** score(stats) calcula correctamente: hp + attack + defense. */
-    public function test_score_calculates_correctly(): void
+    /** @test */
+    // Autor: Rodolfo Huitron
+    public function score_calcula_hp_attack_defense_correctamente(): void
     {
-        // Autor: Rodolfo Huitron
-        $pokemon = ['hp' => 35, 'attack' => 55, 'defense' => 40];
+        $score = $this->service->score([
+            'hp'      => 35,
+            'attack'  => 55,
+            'defense' => 40,
+        ]);
 
-        $this->assertSame(130, $this->battle->score($pokemon));
+        $this->assertSame(130, $score);
     }
 
-    /** winner(scoreA, scoreB) devuelve A, B o EMPATE correctamente. */
-    public function test_winner_returns_correct_result(): void
+    /** @test */
+    // Autor: Rodolfo Huitron
+    public function winner_devuelve_A_cuando_scoreA_es_mayor(): void
     {
-        // Autor: Andrehi Sandoval
-        $this->assertSame('A', $this->battle->winner(200, 100));
-        $this->assertSame('B', $this->battle->winner(100, 200));
-        $this->assertSame('EMPATE', $this->battle->winner(150, 150));
+        $this->assertSame('A', $this->service->winner(200, 150));
     }
 
-    /** score() devuelve 0 cuando todos los stats son 0. */
-    public function test_score_returns_zero_when_all_stats_are_zero(): void
+    /** @test */
+    // Autor: Andrehi Sandoval
+    public function winner_devuelve_B_cuando_scoreB_es_mayor(): void
     {
-        // Autor: Andrehi Sandoval
-        $pokemon = ['hp' => 0, 'attack' => 0, 'defense' => 0];
+        $this->assertSame('B', $this->service->winner(100, 180));
+    }
 
-        $this->assertSame(0, $this->battle->score($pokemon));
+    /** @test */
+    // Autor: Andrehi Sandoval
+    public function winner_devuelve_EMPATE_cuando_scores_iguales(): void
+    {
+        $this->assertSame('EMPATE', $this->service->winner(150, 150));
     }
 }
