@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Favorite extends Model
 {
-    protected $fillable = ['user_id', 'pokemon_name'];
+    protected $fillable = [
+        'user_id',
+        'pokemon_name',
+        'sprite_data'
+    ];
 
     public function user()
     {
