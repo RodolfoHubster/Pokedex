@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\PokeApiService;
+use App\Services\PokemonMapper;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class PokemonController extends Controller
 {
+    public function __construct(
+        private PokeApiService $api,
+        private PokemonMapper $mapper
+    ) {}
+
     public function home()
     {
         return view('home');
@@ -18,39 +24,35 @@ class PokemonController extends Controller
         $error = null;
         $pokemons = [];
 
-        try {
-            // Agregamos timeout(5) para no dejar colgada la página si la red es lenta
-            if ($request->has('search') && trim($query) === '') {
-                $error = 'El campo de búsqueda no puede estar vacío.';
-            } elseif ($query) {
-                $response = Http::withoutVerifying()->withUserAgent('Pokedex/1.0')->timeout(5)->get("https://pokeapi.co/api/v2/pokemon/{$query}");
-                
-                if ($response->successful()) {
-                    $data = $response->json();
-                    $pokemons = [[
-                        'name'   => $data['name'],
-                        'sprite' => $data['sprites']['front_default'] ?? null,
-                    ]];
-                } else {
-                    $error = 'No se encontró ningún Pokémon con ese nombre.';
-                }
+        if ($request->has('search') && trim($query) === '') {
+            $error = 'El campo de búsqueda no puede estar vacío.';
+        } elseif ($query) {
+            $data = $this->api->getPokemon($query);
+
+            if ($data) {
+                $pokemons = [[
+                    'name'   => $data['name'],
+                    'sprite' => $data['sprites']['front_default'] ?? null,
+                ]];
             } else {
-                $response = Http::withoutVerifying()->withUserAgent('Pokedex/1.0')->timeout(5)->get('https://pokeapi.co/api/v2/pokemon?limit=20');
-                
-                if ($response->successful()) {
-                    $list = $response->json()['results'];
-                    foreach ($list as $item) {
-                        $detail = Http::withoutVerifying()->withUserAgent('Pokedex/1.0')->timeout(3)->get($item['url'])->json();
-                        $pokemons[] = [
-                            'name'   => $item['name'],
-                            'sprite' => $detail['sprites']['front_default'] ?? null,
-                        ];
-                    }
+                $error = 'No se encontró ningún Pokémon con ese nombre.';
+            }
+        } else {
+            $results = $this->api->getPokemonList();
+
+            if (empty($results)) {
+                $error = 'Sin conexión a internet. Verifica tu red para buscar nuevos Pokémon.';
+            }
+
+            foreach ($results as $item) {
+                $detail = $this->api->getPokemon($item['name']);
+                if ($detail) {
+                    $pokemons[] = [
+                        'name'   => $item['name'],
+                        'sprite' => $detail['sprites']['front_default'] ?? null,
+                    ];
                 }
             }
-        } catch (\Exception $e) {
-            // Interceptamos la falla de red y mandamos un mensaje limpio a la vista
-            $error = 'Sin conexión a internet. Verifica tu red para buscar nuevos Pokémon.';
         }
 
         $favoriteNames = auth()->check()
@@ -62,32 +64,18 @@ class PokemonController extends Controller
 
     public function show($name)
     {
-        try {
-            $response = Http::withoutVerifying()->withUserAgent('Pokedex/1.0')->timeout(5)->get("https://pokeapi.co/api/v2/pokemon/{$name}");
+        $data = $this->api->getPokemon($name);
 
-            if (!$response->successful()) {
-                return view('pokemon.error', compact('name'));
-            }
-
-            $data    = $response->json();
-            $pokemon = [
-                'name'    => $data['name'],
-                'sprite'  => $data['sprites']['front_default'] ?? null,
-                'types'   => array_map(fn($t) => $t['type']['name'], $data['types']),
-                'hp'      => $data['stats'][0]['base_stat'],
-                'attack'  => $data['stats'][1]['base_stat'],
-                'defense' => $data['stats'][2]['base_stat'],
-            ];
-
-            $isFavorite = auth()->check() &&
-                auth()->user()->favorites()->where('pokemon_name', $data['name'])->exists();
-
-            return view('pokemon.show', compact('pokemon', 'isFavorite'));
-
-        } catch (\Exception $e) {
-            // Si el usuario entra al detalle sin internet, mostramos la vista de error
+        if (! $data) {
             return view('pokemon.error', compact('name'));
         }
+
+        $pokemon = $this->mapper->map($data);
+
+        $isFavorite = auth()->check() &&
+            auth()->user()->favorites()->where('pokemon_name', $pokemon['name'])->exists();
+
+        return view('pokemon.show', compact('pokemon', 'isFavorite'));
     }
 
     public function about()

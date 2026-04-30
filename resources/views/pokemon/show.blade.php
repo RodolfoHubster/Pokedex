@@ -8,7 +8,7 @@
 
     <div class="flex justify-center gap-3 mb-10">
         @foreach($pokemon['types'] as $type)
-            <span class="px-5 py-2 text-xs font-bold tracking-wider text-gray-900 uppercase bg-gray-300 rounded-full shadow-sm">{{ $type }}</span>
+            <span class="type-{{ $type }} px-5 py-2 text-xs font-bold tracking-wider text-white uppercase rounded-full shadow-md">{{ $type }}</span>
         @endforeach
     </div>
 

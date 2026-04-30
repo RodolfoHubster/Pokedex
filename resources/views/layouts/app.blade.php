@@ -57,6 +57,7 @@
                         <a href="/" class="px-3 py-2 text-sm font-medium tracking-wide text-gray-300 uppercase transition rounded-md hover:text-yellow-500 hover:bg-gray-800">Inicio</a>
                         <a href="/pokemon" class="px-3 py-2 text-sm font-medium tracking-wide text-gray-300 uppercase transition rounded-md hover:text-yellow-500 hover:bg-gray-800">Pokémon</a>
                         <a href="/about" class="px-3 py-2 text-sm font-medium tracking-wide text-gray-300 uppercase transition rounded-md hover:text-yellow-500 hover:bg-gray-800">Acerca de</a>
+                        <a href="{{ route('battle') }}" class="px-3 py-2 text-sm font-medium tracking-wide text-gray-300 uppercase transition rounded-md hover:text-yellow-500 hover:bg-gray-800">⚔️ Battle</a>
                         @auth
                             <a href="{{ route('favorites.index') }}" class="px-3 py-2 text-sm font-bold tracking-wide text-gray-900 uppercase transition bg-yellow-500 rounded-md hover:bg-yellow-400">⭐ Mis Pokémon</a>
                         @endauth

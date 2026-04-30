@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BattleController;
 use App\Http\Controllers\PokemonController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
@@ -10,6 +11,7 @@ Route::get('/', [PokemonController::class, 'home']);
 Route::get('/pokemon', [PokemonController::class, 'index']);
 Route::get('/pokemon/{name}', [PokemonController::class, 'show']);
 Route::get('/about', [PokemonController::class, 'about']);
+Route::get('/battle', [BattleController::class, 'index'])->name('battle');
 
 // Protegidas (requieren login)
 Route::middleware('auth')->group(function () {
