@@ -63,6 +63,6 @@ class BattleTest extends TestCase
 
         // Debe responder de forma controlada (no 500)
         $this->assertContains($response->status(), [200, 422]);
-        $response->assertSee('no existen');
+        $response->assertSee('missingno');
     }
 }
