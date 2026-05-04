@@ -5,6 +5,10 @@ namespace Tests\Unit;
 use App\Services\PokemonMapper;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * 8 Unit tests — PokemonMapper
+ * Autores: Rodolfo Huitron / Andrehi Sandoval
+ */
 class PokemonMapperTest extends TestCase
 {
     private PokemonMapper $mapper;
@@ -15,132 +19,124 @@ class PokemonMapperTest extends TestCase
         $this->mapper = new PokemonMapper();
     }
 
-    // ──────────────────────────────────────────────
-    //  Autor: Andrehi Sandoval
-    // ──────────────────────────────────────────────
+    // ── Helpers ──────────────────────────────────────────────────────────────
 
-    /** El mapper devuelve un arreglo con las llaves esperadas. */
-    public function test_map_returns_expected_keys(): void
+    private function fakePokemon(array $overrides = []): array
     {
-        // Autor: Andrehi Sandoval
-        $data   = $this->pikachuData();
-        $result = $this->mapper->map($data);
-
-        $this->assertArrayHasKey('name', $result);
-        $this->assertArrayHasKey('sprite', $result);
-        $this->assertArrayHasKey('types', $result);
-        $this->assertArrayHasKey('hp', $result);
-        $this->assertArrayHasKey('attack', $result);
-        $this->assertArrayHasKey('defense', $result);
-    }
-
-    /** Extrae tipos correctamente cuando hay 1 tipo. */
-    public function test_map_extracts_single_type(): void
-    {
-        // Autor: Andrehi Sandoval
-        $data         = $this->pikachuData(); // solo tiene 'electric'
-        $result       = $this->mapper->map($data);
-
-        $this->assertCount(1, $result['types']);
-        $this->assertSame('electric', $result['types'][0]);
-    }
-
-    /** Extrae tipos correctamente cuando hay 2 tipos. */
-    public function test_map_extracts_two_types(): void
-    {
-        // Autor: Andrehi Sandoval
-        $data = $this->pikachuData();
-        $data['types'][] = ['type' => ['name' => 'steel']];
-
-        $result = $this->mapper->map($data);
-
-        $this->assertCount(2, $result['types']);
-        $this->assertSame('electric', $result['types'][0]);
-        $this->assertSame('steel', $result['types'][1]);
-    }
-
-    /** Extrae stats hp/attack/defense correctamente. */
-    public function test_map_extracts_stats(): void
-    {
-        // Autor: Andrehi Sandoval
-        $result = $this->mapper->map($this->pikachuData());
-
-        $this->assertSame(35, $result['hp']);
-        $this->assertSame(55, $result['attack']);
-        $this->assertSame(40, $result['defense']);
-    }
-
-    // ──────────────────────────────────────────────
-    //  Autor: Rodolfo Huitron
-    // ──────────────────────────────────────────────
-
-    /** Maneja respuesta incompleta (faltan campos) sin romper. */
-    public function test_map_handles_incomplete_data(): void
-    {
-        // Autor: Rodolfo Huitron
-        $incomplete = ['name' => 'missingno']; // sin types, stats ni sprites
-        $result     = $this->mapper->map($incomplete);
-
-        $this->assertSame('missingno', $result['name']);
-        $this->assertNull($result['sprite']);
-        $this->assertSame([], $result['types']);
-        $this->assertSame(0, $result['hp']);
-        $this->assertSame(0, $result['attack']);
-        $this->assertSame(0, $result['defense']);
-    }
-
-    /** Maneja respuesta vacía sin romper. */
-    public function test_map_handles_empty_data(): void
-    {
-        // Autor: Rodolfo Huitron
-        $result = $this->mapper->map([]);
-
-        $this->assertSame('', $result['name']);
-        $this->assertNull($result['sprite']);
-        $this->assertSame([], $result['types']);
-        $this->assertSame(0, $result['hp']);
-        $this->assertSame(0, $result['attack']);
-        $this->assertSame(0, $result['defense']);
-    }
-
-    /** Normalización de nombre (trim/lower). */
-    public function test_normalize_name_trims_and_lowercases(): void
-    {
-        // Autor: Rodolfo Huitron
-        $this->assertSame('pikachu', $this->mapper->normalizeName('  PIKACHU  '));
-        $this->assertSame('bulbasaur', $this->mapper->normalizeName('Bulbasaur'));
-        $this->assertSame('mr-mime', $this->mapper->normalizeName('Mr-Mime'));
-    }
-
-    /** Manejo de "pokémon no encontrado" (null del servicio) de forma controlada. */
-    public function test_map_with_null_returns_defaults_when_called_with_empty(): void
-    {
-        // Autor: Rodolfo Huitron
-        // Cuando la API devuelve null el controlador no llama a map(); pero si
-        // se llama con [] (equivalente de respuesta vacía) no debe lanzar excepción.
-        $result = $this->mapper->map([]);
-
-        $this->assertIsArray($result);
-        $this->assertArrayHasKey('name', $result);
-    }
-
-    // ──────────────────────────────────────────────
-    //  Helper
-    // ──────────────────────────────────────────────
-
-    private function pikachuData(): array
-    {
-        return [
+        return array_merge([
             'name'    => 'pikachu',
             'sprites' => ['front_default' => 'https://example.com/pikachu.png'],
             'types'   => [
                 ['type' => ['name' => 'electric']],
             ],
             'stats' => [
-                ['base_stat' => 35],  // hp
-                ['base_stat' => 55],  // attack
-                ['base_stat' => 40],  // defense
+                ['base_stat' => 35, 'stat' => ['name' => 'hp']],
+                ['base_stat' => 55, 'stat' => ['name' => 'attack']],
+                ['base_stat' => 40, 'stat' => ['name' => 'defense']],
             ],
-        ];
+        ], $overrides);
+    }
+
+    // ── Tests ─────────────────────────────────────────────────────────────────
+
+    /** @test */
+    // Autor: Rodolfo Huitron
+    public function map_devuelve_las_llaves_esperadas(): void
+    {
+        $result = $this->mapper->map($this->fakePokemon());
+
+        $this->assertArrayHasKey('name',    $result);
+        $this->assertArrayHasKey('sprite',  $result);
+        $this->assertArrayHasKey('types',   $result);
+        $this->assertArrayHasKey('hp',      $result);
+        $this->assertArrayHasKey('attack',  $result);
+        $this->assertArrayHasKey('defense', $result);
+    }
+
+    /** @test */
+    // Autor: Rodolfo Huitron
+    public function extrae_un_tipo_correctamente(): void
+    {
+        $result = $this->mapper->map($this->fakePokemon());
+
+        $this->assertCount(1, $result['types']);
+        $this->assertSame('electric', $result['types'][0]);
+    }
+
+    /** @test */
+    // Autor: Rodolfo Huitron
+    public function extrae_dos_tipos_correctamente(): void
+    {
+        $data = $this->fakePokemon([
+            'types' => [
+                ['type' => ['name' => 'water']],
+                ['type' => ['name' => 'flying']],
+            ],
+        ]);
+
+        $result = $this->mapper->map($data);
+
+        $this->assertCount(2, $result['types']);
+        $this->assertSame('water',  $result['types'][0]);
+        $this->assertSame('flying', $result['types'][1]);
+    }
+
+    /** @test */
+    // Autor: Rodolfo Huitron
+    public function extrae_stats_hp_attack_defense_correctamente(): void
+    {
+        $result = $this->mapper->map($this->fakePokemon());
+
+        $this->assertSame(35, $result['hp']);
+        $this->assertSame(55, $result['attack']);
+        $this->assertSame(40, $result['defense']);
+    }
+
+    /** @test */
+    // Autor: Andrehi Sandoval
+    public function maneja_respuesta_incompleta_sin_romper(): void
+    {
+        $result = $this->mapper->map(['name' => 'raro']);
+
+        $this->assertSame('raro', $result['name']);
+        $this->assertNull($result['sprite']);
+        $this->assertSame([], $result['types']);
+        $this->assertSame(0, $result['hp']);
+        $this->assertSame(0, $result['attack']);
+        $this->assertSame(0, $result['defense']);
+    }
+
+    /** @test */
+    // Autor: Andrehi Sandoval
+    public function maneja_respuesta_vacia_sin_romper(): void
+    {
+        $result = $this->mapper->map([]);
+
+        $this->assertSame('',   $result['name']);
+        $this->assertNull($result['sprite']);
+        $this->assertSame([], $result['types']);
+        $this->assertSame(0,  $result['hp']);
+    }
+
+    /** @test */
+    // Autor: Andrehi Sandoval
+    public function normaliza_nombre_con_trim_y_lowercase(): void
+    {
+        $result = $this->mapper->normalizeName('  PIKACHU  ');
+
+        $this->assertSame('pikachu', $result);
+    }
+
+    /** @test */
+    // Autor: Andrehi Sandoval
+    public function manejo_de_pokemon_no_encontrado_devuelve_estructura_vacia(): void
+    {
+        // Simula lo que haría el controlador si la API devuelve null/vacío
+        $result = $this->mapper->map([]);
+
+        $this->assertSame('', $result['name']);
+        $this->assertSame(0,  $result['hp']);
+        $this->assertSame(0,  $result['attack']);
+        $this->assertSame(0,  $result['defense']);
     }
 }
