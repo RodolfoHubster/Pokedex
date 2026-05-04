@@ -118,7 +118,7 @@
                 ['list', 'Detalle completo', 'Stats, tipos, altura, peso y habilidades de cada Pokémon'],
                 ['lock', 'Autenticación', 'Registro, login y logout con sesiones seguras'],
                 ['star', 'Sistema de favoritos', 'Guarda tus Pokémon favoritos vinculados a tu cuenta'],
-                ['bolt', 'Battle', 'Combate por turnos con movimientos, captura y huida'],
+                ['bolt', 'Battle', 'Compara dos Pokémon: score = HP + Ataque + Defensa · el mayor gana'],
                 ['chart-bar', 'Dashboard personal', 'Estadísticas y accesos rápidos para el usuario'],
             ] as [$icon, $title, $desc])
             <div class="flex items-start gap-3 p-3 bg-gray-900 rounded-lg border border-gray-700">

@@ -47,11 +47,8 @@ class BattleController extends Controller
             ]);
         }
 
-        $movesA = collect($dataA['moves'] ?? [])->take(4)->pluck('move.name')->toArray();
-        $movesB = collect($dataB['moves'] ?? [])->take(4)->pluck('move.name')->toArray();
-
-        $pokemonA = array_merge($this->mapper->map($dataA), ['moves' => $movesA]);
-        $pokemonB = array_merge($this->mapper->map($dataB), ['moves' => $movesB]);
+        $pokemonA = $this->mapper->map($dataA);
+        $pokemonB = $this->mapper->map($dataB);
 
         $scoreA = $this->battle->score($pokemonA);
         $scoreB = $this->battle->score($pokemonB);
