@@ -39,7 +39,6 @@ class BattleTest extends TestCase
         $response = $this->get('/battle?A=pikachu&B=bulbasaur');
 
         $response->assertStatus(200);
-        // bulbasaur score=143 > pikachu score=130 → gana B
         $response->assertSee('bulbasaur');
     }
 
@@ -61,7 +60,7 @@ class BattleTest extends TestCase
 
         $response = $this->get('/battle?A=pikachu&B=missingno');
 
-        // Debe responder de forma controlada (no 500)
+        // Respuesta controlada (no 500) y muestra el nombre del pokémon inválido
         $this->assertContains($response->status(), [200, 422]);
         $response->assertSee('missingno');
     }
